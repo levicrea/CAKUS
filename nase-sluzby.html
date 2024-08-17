@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ČAKUS - Naše služby</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: white;
+            color: black;
+            overflow-x: hidden;
+        }
+
+        /* Стили для навигационной панели */
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .navbar a:hover,
+        .navbar a:active,
+        .navbar a.active {
+            background-color: #555;
+            color: yellow;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1001;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+        }
+
+        .menu {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .menu ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu ul li {
+            margin: 0;
+        }
+
+        .menu ul li a {
+            padding: 10px 20px;
+            display: block;
+        }        
+
+        /* Основное содержимое страницы */
+        .content {
+            margin-top: 80px;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Сетка плиток */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 10px;
+            width: 100%;
+            height: calc(100vh - 110px);
+            box-sizing: border-box;
+        }
+
+        /* Стили для плиток */
+        .grid-item {
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 25px;
+            font-weight: comic sans ms;
+            color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .grid-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+            transition: background-color 0.3s;
+        }
+
+        .grid-item:hover {
+            transform: scale(1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .grid-item:hover::before {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .grid-item span {
+            position: relative;
+            z-index: 2;
+        }
+
+        .item-1 { background-image: url('https://img.stavebni-vzdelani.cz/2018/06/pokladka-asfaltu.png'); }
+        .item-2 { background-image: url('https://www.truck1.hr/img/Gradevinski_strojevi_Vogele_SUPER_1800_2-ful-1622/1622_9807233112669.jpg'); }
+        .item-3 { background-image: url('https://asfalt-kachestvo.ru/news/images/preimushchestva-litoj-asfalt.jpg'); }
+        .item-4 { background-image: url('https://kraje.rsd.cz/karlovarsky/wp-content/uploads/sites/6/2023/05/kfely_krasny_jez_15_5_3.jpg'); }
+        .item-5 { background-image: url('https://thermoalliance.by/stories/_CATALOG/10_lv/21.jpg'); }
+        .item-6 { background-image: url('https://асфальтирование.рус/wp-content/uploads/2019/10/6.png'); }
+
+        .section {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            color: white;
+            font-size: 24px;
+
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1;
+        }
+
+        .section-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 32px;
+
+            margin-bottom: 20px;
+        }
+
+        .down-arrow {
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+            transition: color 0.3s;
+        }
+
+        .down-arrow:hover {
+            color: yellow;
+        }
+
+        .section-1 { background-image: url('https://img.stavebni-vzdelani.cz/2018/06/pokladka-asfaltu.png'); }
+        .section-2 { background-image: url('https://www.truck1.hr/img/Gradevinski_strojevi_Vogele_SUPER_1800_2-ful-1622/1622_9807233112669.jpg'); }
+        .section-3 { background-image: url('https://asfalt-kachestvo.ru/news/images/preimushchestva-litoj-asfalt.jpg'); }
+        .section-4 { background-image: url('https://kraje.rsd.cz/karlovarsky/wp-content/uploads/sites/6/2023/05/kfely_krasny_jez_15_5_3.jpg'); }
+        .section-5 { background-image: url('https://thermoalliance.by/stories/_CATALOG/10_lv/21.jpg'); }
+        .section-6 { background-image: url('https://асфальтирование.рус/wp-content/uploads/2019/10/6.png'); }
+
+        .section {
+            background-size: cover;
+            background-position: center;
+        }
+
+        .separator {
+            height: 1px;
+            background-color: yellow;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: center;
+                height: auto;
+                padding: 20px 0;
+                position: relative;
+            }
+
+            .menu ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+                position: absolute;
+                top: 60px;
+                left: 0;
+                z-index: 1000;
+                text-align: center;
+            }
+
+            .menu ul.show {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .content {
+                margin-top: 0; 
+            }
+
+            .section-content {
+                font-size: 18px;
+                padding: 10px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .back-button {
+                font-size: 16px;
+                top: 20px;
+                left: 10px;
+            }
+
+            .down-arrow {
+                font-size: 20px;
+            }
+
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .button {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .grid-item {
+        font-size: 16px; /* уменьшенный размер шрифта для небольших экранов */
+    }
+        }
+
+        @media (max-width: 480px) {
+            .navbar a {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+            .section-content {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .down-arrow {
+                font-size: 18px;
+            }
+
+            .grid-item {
+        font-size: 14px; /* еще более уменьшенный размер шрифта для самых маленьких экранов */
+    }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Навигационная панель -->
+<div class="navbar">
+    <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+    <div class="menu">
+        <ul>
+            <li><a href="index.html">ÚVOD</a></li>
+            <li><a href="nase-sluzby.html" class="active">NAŠE SLUŽBY</a></li>
+            <li><a href="ceniky.html">CENÍKY</a></li>
+            <li><a href="galerie.html">GALERIE</a></li>
+            <li><a href="kontakt.html">KONTAKT</a></li>
+        </ul>
+    </div>
+</div>
+
+
+    <!-- Основное содержимое -->
+    <div class="content">
+        <div class="grid-container">
+            <a href="#" class="grid-item item-1" onclick="scrollToSection('section-1')"><span>RUČNÍ POKLÁDKA ASFALTU</span></a>
+            <a href="#" class="grid-item item-2" onclick="scrollToSection('section-2')"><span>FINIŠER</span></a>
+            <a href="#" class="grid-item item-3" onclick="scrollToSection('section-3')"><span>LITÉ ASFALTY</span></a>
+            <a href="#" class="grid-item item-4" onclick="scrollToSection('section-4')"><span>FRÉZOVÁNÍ VOZOVKY</span></a>
+            <a href="#" class="grid-item item-5" onclick="scrollToSection('section-5')"><span>KANALIZAČNÍ VPUSTI, POKLOPY A ŠOUPATA</span></a>
+            <a href="#" class="grid-item item-6" onclick="scrollToSection('section-6')"><span>ZALÉVÁNÍ SPÁR</span></a>
+        </div>
+    </div>
+
+    <!-- Секции с информацией -->
+    <div id="section-1" class="section section-1">
+        <div class="section-content">
+            <div class="section-title">RUČNÍ POKLÁDKA ASFALTU</div>
+            <p>Pro oblasti, kde není možné použít mechanizované zařízení, volíme ruční pokládku asfaltu. Tento způsob je ideální pro místa, kde finišer neprojede nebo kde je třeba vytvořit specifický tvar asfaltového povrchu. Ruční pokládka se používá například při úpravách kanalizačních poklopů, vpustí či při práci v těžko přístupných lokalitách.</p>
+            <div class="down-arrow" onclick="scrollToSection('section-2')">&#x2193;</div>
+        </div>
+    </div>
+        <div class="separator"></div>
+
+    <div id="section-2" class="section section-2">
+        <div class="section-content">
+            <div class="section-title">FINIŠER</div>
+            <p>Finišer je speciální stroj určený pro pokládku asfaltových vrstev na silnice. Jede přesně podle nastavených parametrů, což umožňuje vytvořit rovnoměrný a hladký asfaltový povrch stálé tloušťky. Výhodou finišeru je jeho schopnost přesně dodržovat nastavené parametry.</p>
+            <div class="down-arrow" onclick="scrollToSection('section-3')">&#x2193;</div>
+        </div>
+    </div>
+        <div class="separator"></div>
+
+    <div id="section-3" class="section section-3">
+        <div class="section-content">
+            <div class="section-title">LITÉ ASFALTY</div>
+            <p>Litý asfalt je tvořen směsí hustého kameniva, kamenné moučky a asfaltového pojiva, které jsou smíchány za vysoké teploty v přesně stanovených poměrech. Tento materiál se aplikuje ručně v jedné či více vrstvách. Pokud je požadována drsnost povrchu, je upravován křemičitým pískem. Bez této úpravy zůstává povrch litého asfaltu hladký a rovný.</p>
+            <div class="down-arrow" onclick="scrollToSection('section-4')">&#x2193;</div>
+        </div>
+    </div>
+        <div class="separator"></div>
+
+    <div id="section-4" class="section section-4">
+        <div class="section-content">
+            <div class="section-title">FRÉZOVÁNÍ VOZOVKY</div>
+            Frézování asfaltu provádíme pomocí moderních kolových fréz s klasickým silničním frézovacím bubnem. Tyto frézky jsou vybaveny specializovanými podavači, které okamžitě odstraňují rozrušený povrch. Po následné úpravě mohou být odstraněné úlomky znovu využity jako materiál pro obnovu vozovky. Tímto způsobem snižujeme množství odpadu a chráníme životní prostředí. Moderní technologie nám umožňuje provádět opravy komunikací rychleji a s menším dopadem na uživatele a přírodu.
+            <div class="down-arrow" onclick="scrollToSection('section-5')">&#x2193;</div>
+        </div>
+    </div>
+        <div class="separator"></div>
+
+    <div id="section-5" class="section section-5">
+        <div class="section-content">
+            <div class="section-title">KANALIZAČNÍ VPUSTI, POKLOPY A ŠOUPATA</div>
+            <p>Naše služby zahrnují opravy a výškové úpravy kanalizačních poklopů, vpustí a vodovodních šoupat. Podle potřeby a požadavků zákazníka provádíme výměnu poškozených komponentů za nové. Pokud jsou stávající komponenty v dobrém stavu, mohou být stále využity, což nám umožňuje poskytovat efektivní a hospodárné řešení.</p>
+            <div class="down-arrow" onclick="scrollToSection('section-6')">&#x2193;</div>
+        </div>
+    </div>
+
+        <div class="separator"></div>
+
+    <div id="section-6" class="section section-6">
+        <div class="section-content">
+            <div class="section-title">ZALÉVÁNÍ SPÁR</div>
+            <p>Zalévání asfaltem se využívá k opravě prasklin a trhlin v betonových a asfaltových površích. Tento postup zabraňuje pronikání vody do spár, která by v zimě mohla zamrznout a způsobit jejich rozšíření. Díky zálivce jsou spáry chráněny před vlivy počasí a díky jejich vynikajícím mechanickým vlastnostem se zajišťuje jejich dlouhá životnost.</p>
+        </div>
+    </div>
+
+    <script>
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const menu = document.querySelector('.menu ul');
+            
+            menuToggle.addEventListener('click', function() {
+                menu.classList.toggle('show');
+            });
+
+            const currentPage = window.location.pathname.split("/").pop();
+            const navLinks = document.querySelectorAll('.navbar a');
+
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>До и После</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+        }
+
+        .image-comparison {
+            position: relative;
+            width: 100%;
+            height: 500px; /* Adjust height as needed */
+            overflow: hidden;
+        }
+
+        .image-before, .image-after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .image-before {
+            background-image: url('do.png');
+        }
+
+        .image-after {
+            background-image: url('posle.png');
+            clip-path: inset(0 50% 0 0); /* Initially show 50% of the image */
+        }
+
+        .slider {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px; /* Thin width for the slider line */
+            height: 100%;
+            background-color: white; /* Slider color */
+            cursor: ew-resize;
+            transform: translateX(-50%);
+            z-index: 1; /* Ensure the slider is above the images */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slider::before, .slider::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            transform: translateY(-50%);
+        }
+
+        .slider::before {
+            border-width: 10px 10px 10px 0;
+            border-color: transparent white transparent transparent; /* Arrow pointing left */
+            left: -15px; /* Position left arrow */
+            top: 50%;
+        }
+
+        .slider::after {
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent white; /* Arrow pointing right */
+            right: -15px; /* Position right arrow */
+            top: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-comparison">
+            <div class="image-before"></div>
+            <div class="image-after"></div>
+            <div class="slider"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slider = document.querySelector('.slider');
+            const imageAfter = document.querySelector('.image-after');
+            const imageComparison = document.querySelector('.image-comparison');
+
+            let isDragging = false;
+
+            slider.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                moveSlider(e);
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    moveSlider(e);
+                }
+            });
+
+            function moveSlider(e) {
+                const rect = imageComparison.getBoundingClientRect();
+                const xPos = Math.min(Math.max(0, e.clientX - rect.left), rect.width);
+                slider.style.left = `${xPos}px`;
+                imageAfter.style.clipPath = `inset(0 ${rect.width - xPos}px 0 0)`;
+            }
+        });
+    </script>
+</body>
+</html>
+
+

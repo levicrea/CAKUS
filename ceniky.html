@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ČAKUS - Ceníky</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: white; /* Bílý pozadí */
+            color: black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.9); /* Tmavší pozadí */
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .navbar a:hover,
+        .navbar a:active,
+        .navbar a.active {
+            background-color: #555;
+            color: yellow;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1001;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+        }
+
+        .menu {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .menu ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu ul li {
+            margin: 0;
+        }
+
+        .menu ul li a {
+            padding: 10px 20px;
+            display: block;
+        }
+
+        /* Adaptivní styl */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: center;
+                height: auto;
+                padding: 20px 0;
+            }
+
+            .menu ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+                position: absolute;
+                top: 60px;
+                left: 0;
+                z-index: 1000;
+                text-align: center;
+            }
+
+            .menu ul.show {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .navbar a {
+                padding: 10px 0;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar a {
+                font-size: 12px;
+            }
+        }
+
+        .content-block {
+            margin-top: 60px; /* Přiléhání bloku přímo k menu */
+            padding: 20px;
+            width: calc(100% - 40px); /* Rámeček s malým odsazením od okrajů */
+            background-color: #f1f1f1; /* Světle šedé pozadí */
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-block h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .content-block p {
+            font-size: 18px;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .content-block a {
+            color: blue;
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: none; /* Odstraníme podtržení u odkazu */
+        }
+
+        .content-block a:hover {
+            text-decoration: underline; /* Přidáme podtržení při najetí myší */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+        <div class="menu">
+            <ul>
+                <li><a href="index.html">ÚVOD</a></li>
+                <li><a href="nase-sluzby.html">NAŠE SLUŽBY</a></li>
+                <li><a href="ceniky.html">CENÍKY</a></li>
+                <li><a href="galerie.html">GALERIE</a></li>
+                <li><a href="kontakt.html">KONTAKT</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <h1>CENÍKY</h1>
+        <p>Ceny jsou pouze orientační. Pro konkrétní nabídku <a href="kontakt.html">nás kontaktujte</a>.</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const menu = document.querySelector('.menu ul');
+            
+            menuToggle.addEventListener('click', function() {
+                menu.classList.toggle('show');
+            });
+
+            const currentPage = window.location.pathname.split("/").pop();
+            const navLinks = document.querySelectorAll('.navbar a');
+
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

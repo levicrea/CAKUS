@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ČAKUS - Asfaltování</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            color: white;
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .navbar a:hover,
+        .navbar a:active,
+        .navbar a.active {
+            background-color: #555;
+            color: yellow;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1001;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+        }
+
+        .menu {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .menu ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu ul li {
+            margin: 0;
+        }
+
+        .menu ul li a {
+            padding: 10px 20px;
+            display: block;
+        }
+
+        /* Главный контейнер */
+        .maincontent {
+            height: 100vh; /* Высота 100% от видимой области экрана */
+            background: url('https://raketa-spb.ru/wp-content/uploads/2023/03/aspfaltirovanie.jpg') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 20px;
+        }
+
+        .maincontent .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+        }
+
+        .maincontent .text, .maincontent .button-container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .maincontent .text {
+            max-width: 800px;
+            font-size: 22px;
+            font-weight: 600;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .button {
+            background-color: yellow;
+            color: black;
+            border: none;
+            padding: 15px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            width: 45%;
+        }
+
+        .button:hover,
+        .button:active {
+            background-color: #f4c300;
+            color: black;
+        }
+
+        /* Бонусный контейнер */
+        .bonuscontent {
+            background-color: black;
+            color: black;
+            padding: 50px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .bonuscontent .yellow-strip {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: yellow;
+        }
+
+        .bonuscontent .icon-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+        }
+
+        .bonuscontent .icon-text {
+            text-align: center;
+        }
+
+        .bonuscontent .icon {
+            width: 80px;
+            height: 80px;
+        }
+
+        .bonuscontent .text {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: white;
+        }
+
+        /* Контейнер для партнеров */
+        .partnercontent {
+            background-color: white;
+            color: black;
+            padding: 50px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .partnercontent h2 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 40px;
+        }
+
+        .partnercontent .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+            padding: 10px 0;
+            background-color: #fff;
+        }
+
+        .partnercontent .marquee {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 20s linear infinite;
+        }
+
+        .partnercontent .marquee img {
+            height: 60px;
+            margin: 0 40px;
+            vertical-align: middle;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Адаптивные стили */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: center;
+                height: auto;
+                padding: 20px 0;
+            }
+
+            .menu ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: rgba(51, 51, 51, 0.8);
+                position: absolute;
+                top: 60px;
+                left: 0;
+                z-index: 1000;
+                text-align: center;
+            }
+
+            .menu ul.show {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .navbar a {
+                padding: 10px 0;
+                font-size: 14px;
+            }
+
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .button {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .bonuscontent .icon-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .bonuscontent .icon {
+                margin-bottom: 20px;
+            }
+
+            .bonuscontent .text,
+            .maincontent .text {
+                font-size: 16px;
+            }
+
+            .partnercontent h2 {
+                font-size: 24px;
+            }
+
+            .partnercontent .marquee img {
+                margin: 0 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar a {
+                font-size: 12px;
+            }
+
+            .bonuscontent .text {
+                font-size: 16px;
+            }
+
+            .bonuscontent .icon-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .bonuscontent .icon {
+                margin-bottom: 20px;
+            }
+
+            .partnercontent h2 {
+                font-size: 20px;
+            }
+
+            .partnercontent .marquee img {
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+        <div class="menu">
+            <ul>
+                <li><a href="index.html">ÚVOD</a></li>
+                <li><a href="nase-sluzby.html">NAŠE SLUŽBY</a></li>
+                <li><a href="ceniky.html">CENÍKY</a></li>
+                <li><a href="galerie.html">GALERIE</a></li>
+                <li><a href="kontakt.html">KONTAKT</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="maincontent">
+        <div class="overlay"></div>
+        <div class="text">
+            ČAKUS je váš spolehlivý partner v oblasti asfaltování. Nabízíme kompletní služby v oblasti pokládky a oprav asfaltových povrchů s důrazem na vysokou kvalitu, dlouhou životnost a dodržování termínů. Naši odborníci používají moderní technologie a materiály, což zaručuje pevný a rovný povrch i při vysokém zatížení. Volbou naší společnosti získáte profesionální přístup, individuální řešení a konkurenceschopné ceny.
+        </div>
+        <div class="button-container">
+            <button class="button" onclick="window.location.href='nase-sluzby.html';">Co děláme</button>
+            <button class="button" onclick="window.location.href='kontakt.html';">Nezávazná poptávka</button>
+        </div>
+    </div>
+
+    <div class="bonuscontent">
+        <div class="yellow-strip"></div>
+        <div class="icon-container">
+            <div class="icon-text">
+                <img class="icon" src="https://img.icons8.com/?size=100&id=15927&format=png&color=ffff00" alt="Pracujeme od roku 1992">
+                <div class="text">Pracujeme od roku 1992</div>
+            </div>
+            <div class="icon-text">
+                <img class="icon" src="https://img.icons8.com/?size=100&id=FFdft2aGmPoF&format=png&color=ffff00" alt="Tisíce dokončených projektů">
+                <div class="text">Tisíce dokončených projektů</div>
+            </div>
+            <div class="icon-text">
+                <img class="icon" src="https://img.icons8.com/?size=100&id=57927&format=png&color=ffff00" alt="Záruka kvality">
+                <div class="text">Záruka kvality</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="partnercontent">
+        <h2>NAŠI PARTNEŘI</h2>
+        <div class="marquee-container">
+            <div class="marquee">
+                <!-- Замените ссылки на логотипы партнеров -->
+                <img src="https://www.ppas.cz/sites/default/files/inline-images/PP_logo_2015_RGB.gif" alt="PPSD">
+                <img src="https://www.tsk-praha.cz/BootstrapThemeStatic/themes/Portal8.0/img/logo-tsk.svg?v=2.0" alt="TSK">
+                <img src="https://eurovia.vinci-construction.cz/files/eurovia-logotype-barva-rgb.svg" alt="Eurovia">
+                <img src="https://www.betonserver.cz/files/676-obalovna-stredoklukygif.gif" alt="Obalovna">
+                <img src="https://porr.cz/fileadmin/_processed_/0/0/csm_PORR_RGB_01_fa09b25e5c.png" alt="Porr">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const menu = document.querySelector('.menu ul');
+            
+            menuToggle.addEventListener('click', function() {
+                menu.classList.toggle('show');
+            });
+
+            const currentPage = window.location.pathname.split("/").pop();
+            const navLinks = document.querySelectorAll('.navbar a');
+
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
